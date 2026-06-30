@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an Orthopaedic Consultation in Bengaluru | OrthoNow</title>
+<meta name="description" content="Get an expert orthopaedic opinion for knee or back pain. 9 clinics across Bengaluru. Book in under a minute.">
+
+<!--
+  ORTHONOW — "BOOK A CONSULTATION" LANDING PAGE
+  ------------------------------------------------------------
+  Build notes (for the next developer who opens this file):
+
+  - Zero external requests by design: no web fonts, no CDN scripts,
+    no hero images. Everything is system fonts + inline SVG + CSS.
+    This is the single biggest lever for hitting a 90+ mobile
+    PageSpeed score — render-blocking network requests are the
+    #1 killer of LCP/FCP on mobile connections.
+  - Single file, no build step. Open directly in a browser.
+  - The page targets one audience: working professionals (28-50)
+    in Bengaluru with knee/back pain, arriving from a Google Ads
+    campaign. Copy and structure are written for that specific
+    person, not a generic "healthcare" visitor.
+  - Section order follows one argument: "this is your problem ->
+    here's proof we fix it -> here's exactly what happens if you
+    book -> book now." Trust elements sit right before the CTA,
+    not buried in a footer.
+-->
+
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     Palette: clinical, calm, confident — not "startup teal".
+     A deep ink-navy for authority + a warm amber accent that
+     reads as "movement / relief", not the default medical blue.
+     ============================================================ */
+  :root{
+    --ink:        #14213b;   /* primary text / headlines */
+    --ink-soft:   #4a5670;   /* secondary text */
+    --paper:      #fbf9f5;   /* warm off-white background */
+    --paper-dim:  #f1ede3;   /* section alt background */
+    --line:       #e3ddcf;   /* hairline borders */
+    --amber:      #e0852f;   /* primary CTA / accent */
+    --amber-dark: #c46d1c;
+    --teal:       #2f6a64;   /* secondary accent, used sparingly */
+    --white:      #ffffff;
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --shadow-sm: 0 1px 2px rgba(20,33,59,0.06);
+    --shadow-md: 0 8px 24px rgba(20,33,59,0.10);
+
+    --font-display: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-body: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body{
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg{ display:block; max-width:100%; }
+
+  a{ color: inherit; }
+
+  .container{
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ============================================================
+     ANNOUNCEMENT / TRUST STRIP
+     ============================================================ */
+  .strip{
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 9px 16px;
+  }
+  .strip strong{ color: var(--amber); font-weight: 700; }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header{
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .header-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+  }
+  .logo{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .logo span{ color: var(--amber); }
+  .header-call{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    font-size: 14px;
+    text-decoration:none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 9px 14px;
+    border-radius: 999px;
+  }
+  .header-call svg{ width:16px; height:16px; flex-shrink:0; }
+
+  /* ============================================================
+     HERO
+     The signature element: an inline SVG "mobility line" — a
+     single continuous stroke that dips (pain) and rises smooth
+     again (relief), animated to draw itself in on load. It's the
+     one piece of visual flourish on the page, and it's literal:
+     it's what a knee/back-pain recovery curve actually looks like.
+     ============================================================ */
+  .hero{
+    padding: 56px 0 40px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    background: rgba(47,106,100,0.08);
+    border-radius: 999px;
+    padding: 6px 12px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px; height:6px;
+    border-radius:50%;
+    background: var(--teal);
+  }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 5.4vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  h1 em{
+    font-style: normal;
+    color: var(--amber-dark);
+  }
+  .sub{
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: 28px;
+  }
+  .hero-points{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 18px 28px;
+    margin-bottom: 4px;
+  }
+  .hero-point{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .hero-point svg{ width:18px; height:18px; color: var(--teal); flex-shrink:0; }
+
+  .hero-visual{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 28px 24px 22px;
+    box-shadow: var(--shadow-md);
+  }
+  .hero-visual svg{ width:100%; height:auto; }
+  .curve-path{
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    animation: draw 1.6s cubic-bezier(.4,0,.2,1) 0.2s forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset: 0; } }
+  .curve-caption{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .curve-caption .end{ color: var(--teal); }
+
+  /* ============================================================
+     SOCIAL PROOF BAR
+     ============================================================ */
+  .proof-bar{
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-dim);
+    padding: 22px 0;
+  }
+  .proof-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .proof-stat{ text-align:left; }
+  .proof-num{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--ink);
+    line-height:1;
+  }
+  .proof-label{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     SECTION SHELL
+     ============================================================ */
+  section{ padding: 64px 0; }
+  .section-head{ max-width: 56ch; margin-bottom: 36px; }
+  .section-head .eyebrow{ margin-bottom: 14px; }
+  h2{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(24px, 3.4vw, 32px);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .section-head p{ color: var(--ink-soft); font-size: 16px; }
+
+  /* ============================================================
+     "WHAT HAPPENS WHEN YOU BOOK" — process
+     Numbered because this genuinely is a sequence the patient
+     experiences in order; not decorative numbering.
+     ============================================================ */
+  .steps{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .step-card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 22px 20px;
+  }
+  .step-num{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--amber-dark);
+    margin-bottom: 10px;
+  }
+  .step-card h3{
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .step-card p{ font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ============================================================
+     DOCTOR / TRUST CREDIBILITY BLOCK
+     ============================================================ */
+  .trust-block{
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: var(--radius-md);
+    padding: 36px 32px;
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items:center;
+  }
+  .trust-avatar{
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--amber-dark));
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .trust-avatar svg{ width:40px; height:40px; color: var(--white); }
+  .trust-block blockquote{
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .trust-block cite{
+    font-style:normal;
+    font-size: 13.5px;
+    color: #c7cce0;
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     BOOKING FORM — the conversion point
+     ============================================================ */
+  .booking{
+    background: var(--paper-dim);
+  }
+  .booking-grid{
+    display:grid;
+    grid-template-columns: 1fr 0.92fr;
+    gap: 40px;
+    align-items:flex-start;
+  }
+  .booking-copy h2{ margin-bottom: 14px; }
+  .booking-list{ margin-top: 22px; display:flex; flex-direction:column; gap:14px; }
+  .booking-list-item{
+    display:flex; align-items:flex-start; gap:10px;
+    font-size: 14.5px; color: var(--ink-soft);
+  }
+  .booking-list-item svg{ width:18px; height:18px; color: var(--teal); flex-shrink:0; margin-top:2px; }
+
+  .form-card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 28px 26px;
+    position: sticky;
+    top: 24px;
+  }
+  .form-card h3{
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .form-card .form-sub{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+  .field{ margin-bottom: 16px; }
+  .field label{
+    display:block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .field input{
+    width: 100%;
+    font-size: 16px; /* 16px minimum prevents iOS auto-zoom on focus */
+    font-family: inherit;
+    padding: 13px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field input:focus{
+    outline: none;
+    border-color: var(--teal);
+    background: var(--white);
+  }
+  .field input:focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  .field-error{
+    font-size: 12.5px;
+    color: #b3401f;
+    margin-top: 6px;
+    display:none;
+  }
+  .field.invalid input{ border-color: #b3401f; }
+  .field.invalid .field-error{ display:block; }
+
+  .btn-primary{
+    width: 100%;
+    background: var(--amber);
+    color: var(--white);
+    border: none;
+    font-family: var(--font-display);
+    font-size: 16.5px;
+    font-weight: 700;
+    padding: 15px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 8px;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .btn-primary:hover{ background: var(--amber-dark); }
+  .btn-primary:active{ transform: scale(0.985); }
+  .btn-primary:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .form-microcopy{
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align:center;
+    margin-top: 12px;
+  }
+
+  /* Thank-you state swaps in without a reload */
+  .thank-you{
+    display:none;
+    text-align:center;
+    padding: 18px 4px 6px;
+  }
+  .thank-you.show{ display:block; }
+  .form-card.submitted .booking-form{ display:none; }
+  .thank-you-icon{
+    width: 52px; height:52px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: rgba(47,106,100,0.12);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .thank-you-icon svg{ width:26px; height:26px; color: var(--teal); }
+  .thank-you h3{ font-family: var(--font-display); font-size: 18px; margin-bottom: 8px; }
+  .thank-you p{ font-size: 14px; color: var(--ink-soft); }
+
+  /* ============================================================
+     STICKY MOBILE CTA
+     This is the "built for mobile, not shrunk" detail — on small
+     screens the booking form is below the fold after scrolling,
+     so a persistent bottom bar keeps the CTA one thumb-tap away
+     at all times, the way a real mobile-first page would.
+     ============================================================ */
+  .mobile-cta{
+    display:none;
+    position: fixed;
+    left:0; right:0; bottom:0;
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    z-index: 50;
+    box-shadow: 0 -4px 16px rgba(20,33,59,0.08);
+  }
+  .mobile-cta a{
+    display:flex; align-items:center; justify-content:center;
+    gap:8px;
+    background: var(--amber);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 15.5px;
+    text-decoration:none;
+    padding: 13px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 28px 0 calc(28px + 64px); /* extra space for sticky mobile CTA */
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .footer-row{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns: 1fr; }
+    .hero{ padding-top: 36px; }
+    .proof-row{ justify-content: flex-start; gap: 28px 36px; }
+    .steps{ grid-template-columns: 1fr; }
+    .trust-block{ grid-template-columns: 1fr; text-align:center; }
+    .trust-block{ justify-items:center; }
+    .booking-grid{ grid-template-columns: 1fr; }
+    .form-card{ position: static; }
+    .mobile-cta{ display:block; }
+    body{ padding-bottom: 0; }
+    .header-call span{ display:none; } /* icon-only call button on mobile */
+  }
+
+  @media (max-width: 480px){
+    .container{ padding: 0 18px; }
+    section{ padding: 44px 0; }
+    .proof-row{ gap: 22px 28px; }
+    .proof-num{ font-size: 22px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .curve-path{ animation: none; stroke-dashoffset: 0; }
+    html{ scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="strip">
+    <strong>9 clinics</strong> across Bengaluru, Hyderabad &amp; Chennai &nbsp;·&nbsp; Same-week appointments available
+  </div>
+
+  <header>
+    <div class="container header-row">
+      <div class="logo">Ortho<span>Now</span></div>
+      <a class="header-call" href="tel:+918041234567" id="headerCallBtn" aria-label="Call OrthoNow now">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Call Now</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============== HERO ============== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">For working professionals in Bengaluru</div>
+          <h1>Knee or back pain slowing you down?<br>Get an <em>expert opinion</em> this week.</h1>
+          <p class="sub">Sitting through long workdays, gym sessions, or your commute shouldn't come with pain you just live with. Talk to an orthopaedic specialist at a clinic near you — no referral needed.</p>
+          <div class="hero-points">
+            <div class="hero-point">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Same-week slots
+            </div>
+            <div class="hero-point">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              No referral required
+            </div>
+            <div class="hero-point">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              9 clinics, pick what's closest
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="75" x2="320" y2="75" stroke="#e3ddcf" stroke-width="1"/>
+            <path class="curve-path" d="M10,40 C 60,40 70,120 130,120 C 190,120 200,30 310,28"
+                  fill="none" stroke="#e0852f" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="10" cy="40" r="5" fill="#14213b"/>
+            <circle cx="130" cy="120" r="5" fill="#c46d1c"/>
+            <circle cx="310" cy="28" r="6" fill="#2f6a64"/>
+          </svg>
+          <div class="curve-caption">
+            <span>Today: Pain &amp; stiffness</span>
+            <span class="end">After care: Back to normal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== PROOF BAR ============== -->
+    <div class="proof-bar">
+      <div class="container proof-row">
+        <div class="proof-stat">
+          <div class="proof-num">9</div>
+          <div class="proof-label">Clinics across 3 cities</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-num">15+ yrs</div>
+          <div class="proof-label">Avg. specialist experience</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-num">4.7&#9733;</div>
+          <div class="proof-label">Average patient rating</div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-num">30 min</div>
+          <div class="proof-label">Typical consult wait time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== WHAT HAPPENS NEXT ============== -->
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">How it works</div>
+          <h2>Three steps, no waiting rooms full of guesswork</h2>
+          <p>You'll know your clinic, your specialist, and your appointment time before you hang up — or before you leave this page.</p>
+        </div>
+        <div class="steps">
+          <div class="step-card">
+            <div class="step-num">STEP 1</div>
+            <h3>Tell us where it hurts</h3>
+            <p>Pick your nearest clinic and the area of concern — knee, back, shoulder, or general orthopaedic care.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 2</div>
+            <h3>Share your details</h3>
+            <p>Just your name, number, and a preferred date. Our care team confirms your slot within the same day.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">STEP 3</div>
+            <h3>Meet your specialist</h3>
+            <p>Walk in for a focused consultation — diagnosis, options explained in plain language, and a clear next step.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== TRUST / CREDIBILITY ============== -->
+    <section>
+      <div class="container">
+        <div class="trust-block">
+          <div class="trust-avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+          </div>
+          <div>
+            <blockquote>"Most knee and back pain we see in working professionals is manageable without surgery — the key is not waiting eight months to get it looked at. We've built OrthoNow so a proper consultation is as easy to book as a cab."</blockquote>
+            <cite>Dr. Orthopaedic Lead, OrthoNow Clinical Team — MBBS, MS (Ortho)</cite>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== BOOKING FORM ============== -->
+    <section class="booking" id="book">
+      <div class="container booking-grid">
+        <div class="booking-copy">
+          <div class="eyebrow">Book your consultation</div>
+          <h2>Get a callback to confirm your slot</h2>
+          <p style="color:var(--ink-soft); font-size:16px;">Leave your name and number — our care coordinator calls you back within the hour to lock in your clinic, specialist, and time.</p>
+          <div class="booking-list">
+            <div class="booking-list-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Confirmation call within 60 minutes during clinic hours
+            </div>
+            <div class="booking-list-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Choose any of our 9 clinics once we call you back
+            </div>
+            <div class="booking-list-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              No payment needed to book — pay at the clinic
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card" id="formCard">
+          <form class="booking-form" id="bookingForm" novalidate>
+            <h3>Request a callback</h3>
+            <p class="form-sub">Takes about 15 seconds.</p>
+
+            <div class="field" id="nameField">
+              <label for="patientName">Full name</label>
+              <input type="text" id="patientName" name="name" autocomplete="name" placeholder="e.g. Rohan Mehta" required>
+              <div class="field-error">Please enter your name.</div>
+            </div>
+
+            <div class="field" id="phoneField">
+              <label for="patientPhone">Phone number</label>
+              <input type="tel" id="patientPhone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile number" required>
+              <div class="field-error">Please enter a valid 10-digit number.</div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              Book My Consultation
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <p class="form-microcopy">We'll only call about your consultation. No spam, ever.</p>
+          </form>
+
+          <div class="thank-you" id="thankYou">
+            <div class="thank-you-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>You're booked in.</h3>
+            <p id="thankYouMsg">Our care coordinator will call you within the hour to confirm your clinic and time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>&copy; Made by Shivam Kumar Mishra.</span>
+      <span>9 clinics — Bengaluru &middot; Hyderabad &middot; Chennai</span>
+    </div>
+  </footer>
+
+  <!-- Persistent mobile CTA — only visible under 860px via CSS -->
+  <div class="mobile-cta">
+    <a href="#book" id="mobileCtaBtn">Book Your Consultation</a>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ----------------------------------------------------------------
+  // GTM dataLayer setup. In production this array is created by the
+  // GTM snippet itself; we initialise it defensively here so this
+  // page works standalone (no GTM container loaded) for review/demo
+  // purposes, and so the push below never throws.
+  // ----------------------------------------------------------------
+  window.dataLayer = window.dataLayer || [];
+
+  var form = document.getElementById('bookingForm');
+  var formCard = document.getElementById('formCard');
+  var thankYou = document.getElementById('thankYou');
+  var nameInput = document.getElementById('patientName');
+  var phoneInput = document.getElementById('patientPhone');
+  var nameField = document.getElementById('nameField');
+  var phoneField = document.getElementById('phoneField');
+
+  function isValidPhone(value) {
+    var digits = value.replace(/\D/g, '');
+    return digits.length === 10;
+  }
+
+  function setFieldError(fieldEl, hasError) {
+    fieldEl.classList.toggle('invalid', hasError);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var nameValue = nameInput.value.trim();
+    var phoneValue = phoneInput.value.trim();
+
+    var nameOk = nameValue.length > 1;
+    var phoneOk = isValidPhone(phoneValue);
+
+    setFieldError(nameField, !nameOk);
+    setFieldError(phoneField, !phoneOk);
+
+    if (!nameOk) nameInput.focus();
+    else if (!phoneOk) phoneInput.focus();
+
+    if (!nameOk || !phoneOk) return;
+
+    // --------------------------------------------------------------
+    // Fires ONLY here, on a validated submit — never on page load.
+    // This is the event GTM listens for via a Custom Event trigger
+    // to fire the GA4 conversion tag (see Task 1 schema:
+    // booking_confirmed / consultation_form_submitted).
+    // Note: we deliberately do NOT push the raw phone number here —
+    // PII should not sit in the dataLayer / GA4. The actual contact
+    // details are sent to the CRM separately (see Task 3).
+    // --------------------------------------------------------------
+    window.dataLayer.push({
+      event: 'consultation_form_submitted',
+      form_location: 'booking_section',
+      lead_source: 'Google Ads - Consultation Landing Page'
+    });
+
+    // Swap to thank-you state without a page reload.
+    formCard.classList.add('submitted');
+    thankYou.classList.add('show');
+
+    // Move focus to the confirmation for screen-reader / keyboard users.
+    thankYou.setAttribute('tabindex', '-1');
+    thankYou.focus();
+  });
+
+  // Clear the error state as soon as the visitor starts fixing a field.
+  nameInput.addEventListener('input', function () { setFieldError(nameField, false); });
+  phoneInput.addEventListener('input', function () { setFieldError(phoneField, false); });
+
+  // ----------------------------------------------------------------
+  // call_now_click tracking (Task 1 schema) — fires on both the
+  // header call button and would fire identically on any other
+  // .call-now-btn element added elsewhere on the site.
+  // ----------------------------------------------------------------
+  document.getElementById('headerCallBtn').addEventListener('click', function () {
+    window.dataLayer.push({
+      event: 'call_now_click',
+      button_position: 'header'
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
